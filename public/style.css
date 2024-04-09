@@ -1,0 +1,52 @@
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+    display: inline-block;
+    width: 45%;
+}
+
+.right {
+    text-align: right;
+    display: inline-block;
+    width: 45%;
+}
+
+.footer {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: #aaa;
+    margin-bottom: 0;
+}
+
+.footer a {
+    text-decoration: none;
+    color: blue;
+}
+
+#mur img {
+    width: 100%;
+}
+
+#mur {
+    column-count: 1;
+}
+
+#mur a {
+    display: block;
+}
+
+@media screen and (min-width: 300px) {
+    #mur {
+        column-count: 3;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    #mur {
+        column-count: 5;
+    }
+}
