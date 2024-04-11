@@ -27,6 +27,20 @@ CREATE TABLE commentaires (
     id_image INTEGER REFERENCES images(id)
 );
 
+CREATE TABLE account (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) NOT NULL,
+    salt BYTEA,
+    hash BYTEA
+);
+
+CREATE TABLE accounts_images_like (
+    id SERIAL PRIMARY KEY,
+    account_id INTEGER REFERENCES account(id),
+    image_id INTEGER REFERENCES images(id),
+    liked BOOLEAN DEFAULT FALSE
+);
+
 INSERT INTO orientation (orientation) VALUES ('Portrait');
 INSERT INTO orientation (orientation) VALUES ('Paysage');
 
