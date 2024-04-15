@@ -504,7 +504,7 @@ server.on('request', (req, res) => {
                         `;
             }
             for (let row of resp.rows){
-                html += `<a href="/page-image/${row.id}"><img src="/public/images/image${row.id}.jpg" alt="image${row.id}" width="300"></a>`;
+                html += `<a href="/page-image/${row.id}"><img src="/public/images/image${row.id}_small.jpg" alt="image${row.id}"></a>`;
             }
             html += `
                     </div>
