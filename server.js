@@ -139,10 +139,6 @@ server.on('request', (req, res) => {
                         </body>
                         </html>
                         `;
-                // for (let i = 0; i < length; i++) {
-                //     html += `<a href="/page-image/${images[i].id}"><img src="/public/images/image${images[i].id}.jpg" alt="image${images[i].id}" width="300"></a>`;
-                // }
-                // html += `</div><footer class="footer">Retrouvez le dépôt git <a href="/github">ici</a></footer></body></html>`;
                 res.writeHead(200, { 'Content-Type': 'text/html' });
                 res.end(html);
             }
@@ -153,64 +149,6 @@ server.on('request', (req, res) => {
             res.writeHead(500, { 'Content-Type': 'text/html' });
             res.end('Erreur interne');
         })
-        // client.query('SELECT * FROM images', (err, resp) => {
-        //     if (err) throw err;
-        //     const images = resp.rows;
-        //     const length = images.length;
-
-        //     let html;
-        //     if (sessionId !== undefined && sessions[sessionId] !== undefined && sessions[sessionId].username !== undefined){
-        //         let username = sessions[sessionId].username
-        //         html = `<!DOCTYPE html>
-        //                 <html lang="fr">
-        //                 <head>
-        //                     <meta charset="UTF-8">
-        //                     <title>Mur d'images</title>
-        //                     <link rel="stylesheet" href="/style">
-        //                 </head>
-        //                 <body>
-        //                     <div>
-        //                         <span>Bonjour ${username}</span>
-        //                         <a href="/signout">Se déconnecter</a>
-        //                     </div>
-        //                     <a href="/">Index</a>
-        //                     <div class="center">
-        //                         <h1>Mur d'images</h1>
-        //                     </div>
-        //                     <div id="mur">
-        //                 `;
-        //         for (let i = 0; i < length; i++){
-        //             html += `<a href="/page-image/${images[i].id}"><img src="/public/images/image${images[i].id}.jpg" alt="image${images[i].id}" width="300"></a>`;
-        //             html += `<a href="/like/${images[i].id}">Like</a>`;
-        //         }
-        //         html += `</div><footer class="footer">Retrouvez le dépôt git <a href="/github">ici</a></footer></body></html>`
-                
-        //     } else {
-        //         html = `<!DOCTYPE html>
-        //                 <html lang="fr">
-        //                 <head>
-        //                     <meta charset="UTF-8">
-        //                     <title>Mur d'images</title>
-        //                     <link rel="stylesheet" href="/style">
-        //                 </head>
-        //                 <body>
-        //                     <div>
-        //                         <a href="/signup">S'inscrire</a>
-        //                         <a href="/signin">Se connecter</a>
-        //                     </div>
-        //                     <a href="/">Index</a>
-        //                     <div class="center">
-        //                         <h1>Mur d'images</h1>
-        //                     </div>
-        //                     <div id="mur">
-        //                 `;
-        //         for (let i = 0; i < length; i++) {
-        //             html += `<a href="/page-image/${images[i].id}"><img src="/public/images/image${images[i].id}.jpg" alt="image${images[i].id}" width="300"></a>`;
-        //         }
-        //         html += `</div><footer class="footer">Retrouvez le dépôt git <a href="/github">ici</a></footer></body></html>`;
-        //     }
-        //     res.end(html);
-        // });
     } else if (req.url === '/style') {
         res.end(fs.readFileSync('public/style.css', 'utf-8'));
     } else if (req.url === '/logo') {
