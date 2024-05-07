@@ -16,7 +16,7 @@ const client = new Client({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: 'application_image',
-    port: 5432
+    port: 21994
 });
 
 let lastSessionId = 0;
