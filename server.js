@@ -12,6 +12,7 @@ const host = 'localhost';
 const port = 8080;
 const server = http.createServer();
 
+// Base de données
 const client = new Client({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -19,12 +20,13 @@ const client = new Client({
     port: 5432
 });
 
+// ID de session
 let lastSessionId = 0;
 let sessions = [];
 
 client.connect()
 .then(() => {
-    console.log('Connected to database');
+    console.log(`Connected to database ${client.database} on ${client.host}:${client.port}`);
 })
 .catch((e) => {
     console.error("Error connecting to database");
@@ -56,7 +58,7 @@ server.on('request', (req, res) => {
             const file = fs.readFileSync(`.${req.url}`);
             res.end(file);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             res.end('erreur ressource');
         }
         return;
@@ -83,6 +85,7 @@ server.on('request', (req, res) => {
                             <meta charset="UTF-8">
                             <title>Mur d'images</title>
                             <link rel="stylesheet" href="/style">
+                            <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                         </head>
                         <body>
                             <div>
@@ -120,6 +123,7 @@ server.on('request', (req, res) => {
                             <meta charset="UTF-8">
                             <title>Mur d'images</title>
                             <link rel="stylesheet" href="/style">
+                            <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                         </head>
                         <body>
                             <div>
@@ -155,11 +159,9 @@ server.on('request', (req, res) => {
         res.end(fs.readFileSync('public/images/logo.png'));
     } else if (req.url.startsWith('/page-image')) {
         // Gère les pages d'images
-        console.log("URL: ", req.url);
         const id = parseInt(req.url.split('/')[2], 10);
-        console.log("ID: ", id);
         const images = fs.readdirSync('public/images');
-        const length = images.filter((image) => !image.endsWith('_small.jpg') && image != "logo.png").length;
+        const length = images.filter((image) => !image.endsWith('_small.jpg') && image != "logo.png" && image != "favicon.ico").length;
         if (Number.isInteger(id)){
             client.query('SELECT * FROM images WHERE id = $1', [id], (err, resp) => {
                 if (err) throw err;
@@ -175,6 +177,7 @@ server.on('request', (req, res) => {
                                 <meta charset="UTF-8">
                                 <title>Image ${id}</title>
                                 <link rel="stylesheet" href="/style">
+                                <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                             </head>
                             <body>`;
                     html += `<a href=/images>Mur</a><div class="center"><img src="/public/images/image${id}.jpg" width="350"><p>${image.nom}</p></div>`;
@@ -229,6 +232,7 @@ server.on('request', (req, res) => {
                                 <head>
                                     <meta charset="UTF-8>
                                     <title>ERREUR SERVEUR</title>
+                                    <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                                 </head>
                                 <body>
                                     <p style="color: red;">ERREUR ${err}</p>
@@ -279,6 +283,7 @@ server.on('request', (req, res) => {
                         <head>
                             <meta charset="UTF-8">
                             <title>Erreur</title>
+                            <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                         </head>
                         <body>
                             <h1>Erreur</h1>
@@ -289,13 +294,14 @@ server.on('request', (req, res) => {
                     `);
                 }
             } catch(e) {
-                console.log(e);
+                console.error(e);
                 res.end(`
                     <!DOCTYPE html>
                     <html>
                     <head>
                         <meta charset="UTF-8">
                         <title>Erreur</title>
+                        <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                     </head>
                     <body>
                         <h1>Erreur</h1>
@@ -342,6 +348,7 @@ server.on('request', (req, res) => {
                             <head>
                                 <meta charset="UTF-8">
                                 <title>Erreur</title>
+                                <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                             </head>
                             <body>
                                 <h1>Erreur</h1>
@@ -368,13 +375,14 @@ server.on('request', (req, res) => {
                     `);
                 }
             } catch(e) {
-                console.log(e);
+                console.error(e);
                 res.end(`
                     <!DOCTYPE html>
                     <html>
                     <head>
                         <meta charset="UTF-8">
                         <title>Erreur</title>
+                        <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                     </head>
                     <body>
                         <h1>Erreur</h1>
@@ -410,6 +418,7 @@ server.on('request', (req, res) => {
                             <meta charset="UTF-8">
                             <title>Mon Mur d'images</title>
                             <link rel="stylesheet" href="/style">
+                            <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                         </head>
                         <body>
                             <div>
@@ -429,6 +438,7 @@ server.on('request', (req, res) => {
                             <meta charset="UTF-8">
                             <title>Mon Mur d'images</title>
                             <link rel="stylesheet" href="/style">
+                            <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
                         </head>
                         <body>
                             <div>
@@ -453,9 +463,7 @@ server.on('request', (req, res) => {
         });
     } else if (req.url.startsWith('/like/')) {
         const imageId = parseInt(req.url.split('/')[2], 10);
-        console.log("Image ID: ", imageId)
         const userId = sessions[sessionId].userId;
-        console.log("User ID: ", userId)
         // récupérer l'id du compte qui like
         if (Number.isInteger(imageId)) {
             client.query('SELECT * FROM accounts_images_like WHERE image_id = $1 AND account_id = $2', [imageId, userId])
@@ -495,8 +503,24 @@ server.on('request', (req, res) => {
             res.writeHead(302, { Location: '/images' });
             res.end();
         }
-    // Page 404
-    } else {
+    } else if (req.url === '/stats') {
+        client.query('SELECT count(*) FROM account')
+        .then((result) => {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end('Nombre de comptes: ' + result.rows[0].count);
+        })
+        .catch((e) => {
+            console.error("ERROR Getting number of accounts");
+            console.error(e);
+            res.writeHead(500, { 'Content-Type': 'text/html' });
+            res.end('Erreur interne');
+        })
+    } else if (req.url === 'favicon.ico') {
+        res.writeHead(200, { 'Content-Type': 'image/x-icon' });
+        res.end(fs.readFileSync('public/images/favicon.ico'));
+    }
+    else {
+        // Page 404
         let html = `
         <!DOCTYPE html>
         <html lang="fr">
@@ -505,6 +529,7 @@ server.on('request', (req, res) => {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>404 Not Found</title>
             <link rel="stylesheet" href="/style">
+            <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
         </head>
         <body>
         <div class="center">
@@ -529,6 +554,7 @@ function generateSignFormPage(up){
     <head>
         <meta charset="UTF-8">
         <title>${up ? "Inscription" : "Connexion"}</title>
+        <link rel="icon" href="/public/images/favicon.ico" type="image/x-icon">
     </head>
     <body>
         <h1>${up ? "Inscription" : "Connexion"}</h1>
