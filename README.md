@@ -1,4 +1,4 @@
-# "Bases de données et développement web" course project
+# Pinspire
 
 ## Infos
 
