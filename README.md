@@ -1,10 +1,11 @@
-# "Bases de données et développement web" course project
+# Pinspire
 
 ## Infos
 
 This project is a simple website (like Pinterest) where you can comment and like pictures. It was made during the "Bases de données et développement web" course at Vanillacademy.
 
-This branch work only at the CREMI (Centre de Ressources pour l'Enseignement des Mathématiques et de l'Informatique) of the University of Bordeaux because of the database configuration.
+[!WARNING]
+> This branch work only at the CREMI (Centre de Ressources pour l'Enseignement des Mathématiques et de l'Informatique) of the University of Bordeaux because of the database configuration.
 
 The course is available [here](https://vanillacademy.com/) (French website).
 
